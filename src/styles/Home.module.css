@@ -1,13 +1,9 @@
-.container {
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.homeContainer {
+  @apply container mx-auto px-4;
 }
 
 .header {
-  padding: 4rem 0 2rem 0;
+  @apply py-12;
 }
 
 .main {
@@ -19,22 +15,21 @@
   min-width: 500px;
 }
 
+.logo {
+  @apply m-auto w-24 max-w-lg mb-6;
+}
+
 .title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-  font-weight: bold;
+  @apply m-0 font-semibold text-2xl;
 }
 
 .title,
 .desc {
-  text-align: center;
+  @apply text-center;
 }
 
 .desc {
-  line-height: 1.5;
-  font-size: 1rem;
-  font-weight: normal;
+  @apply text-base;
 }
 
 .addTodo {

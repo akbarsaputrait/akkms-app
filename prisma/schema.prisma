@@ -10,9 +10,103 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Sample
 model Todo {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   text      String
   completed Boolean
+}
+
+// AAKMS Models
+enum Gender {
+  L
+  P
+}
+
+model User {
+  id                String              @id @default(uuid())
+  nis               String              @unique
+  name              String              @db.VarChar(255)
+  gender            Gender?
+  scores            Int                 @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now())
+  UserClass         UserClass[]
+  UserCodeOfConduct UserCodeOfConduct[]
+}
+
+model UserClass {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  class         Class    @relation(fields: [classId], references: [id])
+  classId       String
+  educationYear String   @db.VarChar()
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+}
+
+model Class {
+  id           String      @id @default(uuid())
+  grade        ClassGrade  @relation(fields: [classGradeId], references: [id])
+  classGradeId String
+  type         ClassType   @relation(fields: [classTypeId], references: [id])
+  classTypeId  String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+  UserClass    UserClass[]
+}
+
+model ClassGrade {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  Class     Class[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model ClassType {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  Class     Class[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model CodeOfConduct {
+  id                  String              @id @default(uuid())
+  name                CodeOfConductName   @relation(fields: [codeOfConductNameId], references: [id])
+  codeOfConductNameId String
+  type                CodeOfConductType   @relation(fields: [codeOfConductTypeId], references: [id])
+  codeOfConductTypeId String
+  UserCodeOfConduct   UserCodeOfConduct[]
+}
+
+model CodeOfConductType {
+  id            String          @id @default(uuid())
+  name          String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  CodeOfConduct CodeOfConduct[]
+}
+
+model CodeOfConductName {
+  id            String          @id @default(uuid())
+  name          String          @db.Text
+  score         Int             @default(0)
+  penalty       String          @db.Text
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  CodeOfConduct CodeOfConduct[]
+}
+
+model UserCodeOfConduct {
+  id              String        @id @default(uuid())
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  codeOfConduct   CodeOfConduct @relation(fields: [codeOfConductId], references: [id])
+  codeOfConductId String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @default(now())
 }
