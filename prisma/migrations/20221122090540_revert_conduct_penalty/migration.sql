@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "CodeOfConductName" ALTER COLUMN "penalty" DROP DEFAULT,
+ALTER COLUMN "penalty" SET DATA TYPE TEXT;
