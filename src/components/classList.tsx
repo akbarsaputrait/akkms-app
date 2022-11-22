@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import { IClass } from "../types";
 
 export const ClassList: React.FC = () => {
-  const { data: classes, error, mutate } = useClasses();
+  const { data: classes, error } = useClasses();
 
   if (error != null) return <div>Error loading todos...</div>;
   if (classes == null) return <div>Loading...</div>;
@@ -16,7 +16,7 @@ export const ClassList: React.FC = () => {
     <>
       <ul className={styles.todoList}>
         {classes.map((data) => (
-          <ClassItem data={data} />
+          <ClassItem data={data} key={data.id} />
         ))}
       </ul>
     </>
@@ -26,7 +26,7 @@ export const ClassList: React.FC = () => {
 const ClassItem: React.FC<{ data: IClass }> = ({ data }) => (
   // @TODO: Unique Key Prop?
   <li className={styles.todo}>
-    <label key={data.id}>
+    <label>
       {data.grade.name} - {data.type.name}
     </label>
   </li>

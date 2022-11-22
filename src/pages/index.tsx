@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
+
 import { ClassList } from "../components/classList";
 import styles from "../styles/Home.module.css";
 
@@ -15,8 +16,10 @@ const Home: NextPage = () => {
         <img src="/images/logo.jpeg" alt="Logo SMA Negeri 1 Ngawi" className={styles.logo} />
         <h1 className={styles.title}>AKKMS App</h1>
         <h2 className={styles.desc}>
-          APLIKASI KEJUJURAN DAN KEDISIPLINAN MANDIRI SISWA <br/>
-          <a href="https://sman1ngawi.sch.id/" target="_blank">SMA Negeri 1 Ngawi</a>
+          APLIKASI KEJUJURAN DAN KEDISIPLINAN MANDIRI SISWA <br />
+          <a href="https://sman1ngawi.sch.id/" target="_blank" rel="noreferrer">
+            SMA Negeri 1 Ngawi
+          </a>
         </h2>
       </header>
 

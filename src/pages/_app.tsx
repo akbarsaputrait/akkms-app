@@ -1,5 +1,7 @@
-import { SWRConfig } from "swr/_internal";
 import "../styles/globals.css";
+
+import { SWRConfig } from "swr/_internal";
+
 import { fetcher } from "../utils";
 
 function MyApp({ Component, pageProps }) {

@@ -45,13 +45,13 @@ async function seedMainClass() {
 
 export function seedClassData() {
   seedClass()
-  .then(async () => {
-    await seedMainClass();
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+    .then(async () => {
+      await seedMainClass();
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    });
 }

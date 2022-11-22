@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { Console } from "console";
-import { type } from "os";
 const prisma = new PrismaClient();
 
 const dataA = [
@@ -73,8 +71,7 @@ const dataC = [
   },
   {
     name: "Pakaian ketat ",
-    penalty:
-      "Dipotong sendiri dan diperbaiki sesuai dengan ketentuan yang berlaku",
+    penalty: "Dipotong sendiri dan diperbaiki sesuai dengan ketentuan yang berlaku",
     score: "10",
   },
   { name: "Siswa Putra gondrong / semir", penalty: "Dicukur", score: "10" },
