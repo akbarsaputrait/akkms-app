@@ -1,9 +1,32 @@
+.wavy,
+.blob {
+  @apply absolute;
+  z-index: -1;
+}
+
+.wavy {
+  @apply inset-0;
+}
+
+.blob {
+  @apply top-20 -left-40;
+}
+
+.blob path {
+  @apply fill-sky-200;
+}
+
+.wavy path {
+  @apply fill-slate-900;
+}
+
 .homeContainer {
   @apply container mx-auto px-4;
+  z-index: 1;
 }
 
 .header {
-  @apply py-12;
+  @apply pt-12 pb-8;
 }
 
 .main {
@@ -16,7 +39,7 @@
 }
 
 .logo {
-  @apply m-auto w-24 max-w-lg mb-6;
+  @apply m-auto w-24 max-w-lg mb-6 drop-shadow-xl;
 }
 
 .title {

@@ -1,8 +1,50 @@
+const withMT = require("@material-tailwind/react/utils/withMT");
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+module.exports = withMT({
+  content: [],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        13: "3.25rem",
+        15: "3.75rem",
+        18: "4.5rem",
+        22: "5.5rem",
+        26: "6.5rem",
+        30: "7.5rem",
+        50: "12.5rem",
+        90: "22.5rem",
+      },
+      colors: ({ colors }) => ({
+        inherit: colors.inherit,
+        current: colors.current,
+        transparent: colors.transparent,
+        black: colors.black,
+        white: colors.white,
+        slate: colors.slate,
+        gray: colors.gray,
+        zinc: colors.zinc,
+        neutral: colors.neutral,
+        stone: colors.stone,
+        red: colors.red,
+        orange: colors.orange,
+        amber: colors.amber,
+        yellow: colors.yellow,
+        lime: colors.lime,
+        green: colors.green,
+        emerald: colors.emerald,
+        teal: colors.teal,
+        cyan: colors.cyan,
+        sky: colors.sky,
+        blue: colors.blue,
+        indigo: colors.indigo,
+        violet: colors.violet,
+        purple: colors.purple,
+        fuchsia: colors.fuchsia,
+        pink: colors.pink,
+        rose: colors.rose,
+      }),
+    },
   },
   plugins: [],
-};
+});

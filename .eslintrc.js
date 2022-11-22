@@ -24,6 +24,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
+    "plugin:@next/next/recommended",
   ],
   plugins: ["simple-import-sort"],
   rules: {
@@ -39,6 +40,7 @@ module.exports = {
     "simple-import-sort/exports": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-var-requires": "off",
   },
   overrides: [
     {

@@ -11,6 +11,10 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+body {
+  @apply bg-slate-200;
+}
+
 a {
   @apply text-blue-500;
 }
