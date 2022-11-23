@@ -24,7 +24,7 @@ export default function LoginForm({ callback }: LoginProps) {
 
   const requestLogin = () => {
     setLoading(true);
-    fetch("https://akkms-sma1ngawi.up.railway.app/api/auth", {
+    fetch(`${process.env.API_URL}/auth`, {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -96,8 +96,14 @@ export default function LoginForm({ callback }: LoginProps) {
         />
       </CardBody>
       <CardFooter className="pt-0">
-        <Button variant="gradient" fullWidth onClick={requestLogin} disabled={loading}>
-          Masuk
+        <Button
+          variant="gradient"
+          fullWidth
+          onClick={requestLogin}
+          disabled={loading || !nis || !pin}>
+          <div className="flex flex-row justify-center items-center">
+            {loading ? "Mohon tunggu..." : "Masuk"}
+          </div>
         </Button>
       </CardFooter>
     </Card>

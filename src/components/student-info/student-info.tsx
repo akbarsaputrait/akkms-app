@@ -7,12 +7,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FaultForm } from "../fault-form/fault-form";
 import styles from "./student-info.module.css";
 
 interface Student {
+  id: string;
   nis: string;
   name: string;
   gender: "L" | "P";
@@ -26,8 +27,29 @@ interface StudentProps {
 }
 
 export const StudentInfo = ({ data }: StudentProps) => {
+  const [user, setUser] = useState(data);
   const [isShowFault, setShowFault] = useState(false);
   const handleShowFault = (value) => setShowFault(value);
+
+  const refetchUser = async () => {
+    fetch(`${process.env.API_URL}/auth/me?id=${data.id}`, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => setUser(data));
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (user) {
+      refetchUser();
+    }
+  }, [user]);
 
   return (
     <>
@@ -54,7 +76,7 @@ export const StudentInfo = ({ data }: StudentProps) => {
           <Typography className="mt-4" variant="paragraph">
             Scores:
           </Typography>
-          <Typography variant="h2">{data.scores.toString() || "-"}</Typography>
+          <Typography variant="h2">{data.scores || 0}</Typography>
         </CardBody>
 
         <CardFooter className={styles.footer}>
@@ -78,7 +100,13 @@ export const StudentInfo = ({ data }: StudentProps) => {
 
       {isShowFault ? (
         <>
-          <FaultForm onCancel={() => handleShowFault(false)} />
+          <FaultForm
+            userId={data.id}
+            onCancel={() => handleShowFault(false)}
+            onSubmit={() => {
+              alert("Pelanggaran berhasil ditambahkan");
+            }}
+          />
         </>
       ) : (
         ""
