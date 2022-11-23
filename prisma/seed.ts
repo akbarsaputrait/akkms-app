@@ -1,5 +1,3 @@
-
-
 // seedClassData();
 
 import { seedStudent } from "./seeder/student";
