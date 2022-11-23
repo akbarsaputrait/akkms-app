@@ -19,16 +19,12 @@ model Todo {
 }
 
 // AAKMS Models
-enum Gender {
-  L
-  P
-}
-
 model User {
   id                String              @id @default(uuid())
   nis               String              @unique
+  pin               String              @db.VarChar()
   name              String              @db.VarChar(255)
-  gender            Gender?
+  gender            String
   scores            Int                 @default(0)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @default(now())

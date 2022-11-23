@@ -174,4 +174,6 @@ export const studentC = [
     name: "VILA RONICA AMALIA MAJID",
     gender: "P",
   },
-];
+].map((student) => {
+  return { ...student, nis: student.nis.toString() };
+});

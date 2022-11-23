@@ -43,18 +43,18 @@ export const StudentInfo = ({ data }: StudentProps) => {
         </CardHeader>
         <CardBody className="text-center p-4">
           <Typography variant="h6" className="mb-2 text-gray-500 font-normal">
-            Nomor Induk Siswa: {data.nis}
+            Nomor Induk Siswa: {data.nis || "-"}
           </Typography>
           <Typography variant="h5" color="blue-gray" className="mb-2">
-            {data.name}
+            {data.name || "-"}
           </Typography>
           <Typography color="blue" className="font-medium" textGradient>
-            {data.class}
+            {data.class || "-"}
           </Typography>
           <Typography className="mt-4" variant="paragraph">
             Scores:
           </Typography>
-          <Typography variant="h2">{data.scores}</Typography>
+          <Typography variant="h2">{data.scores.toString() || "-"}</Typography>
         </CardBody>
 
         <CardFooter className={styles.footer}>

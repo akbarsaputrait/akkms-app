@@ -9,7 +9,19 @@ import { StudentInfo } from "../components/student-info/student-info";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [isLogin, setLogin] = useState(true);
+  const [isLogin, setLogin] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (data: any) => {
+    if (data) {
+      setLogin(true);
+      setUser(data);
+    }
+  };
+
+  const handleLogout = () => {
+    setLogin(false), setUser(null);
+  };
 
   return (
     <div className="relative">
@@ -60,18 +72,14 @@ const Home: NextPage = () => {
         <main className={styles.main}>
           {!isLogin ? (
             <>
-              <LoginForm callback={() => setLogin(true)} />
+              <LoginForm callback={(data) => handleLogin(data)} />
             </>
           ) : (
             <>
               <StudentInfo
                 data={{
-                  nis: "11676",
-                  name: "EVAN CHILWIN EZCA RAJENDRA",
-                  gender: "L",
-                  class: "X MIPA1",
-                  scores: 27,
-                  callback: () => setLogin(false),
+                  ...user,
+                  callback: () => handleLogout(),
                 }}
               />
             </>
