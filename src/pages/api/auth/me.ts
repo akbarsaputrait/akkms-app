@@ -44,7 +44,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (data) {
         data.class = `${data.UserClass[0].class.grade.name} ${data.UserClass[0].class.type.name}`;
-        console.log(data);
         res.json({ data, message: "Siswa ditemukan" });
       }
     }

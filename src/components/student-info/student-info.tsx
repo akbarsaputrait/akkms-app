@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { FaultForm } from "../fault-form/fault-form";
+import { LogFault } from "../log-fault/log-fault";
 import styles from "./student-info.module.css";
 
 interface Student {
@@ -28,8 +29,18 @@ interface StudentProps {
 
 export const StudentInfo = ({ data }: StudentProps) => {
   const [user, setUser] = useState(data);
+
   const [isShowFault, setShowFault] = useState(false);
-  const handleShowFault = (value) => setShowFault(value);
+  const handleShowFault = (value) => {
+    setShowFault(value);
+    setShowLogs(false);
+  };
+
+  const [isShowLogs, setShowLogs] = useState(false);
+  const handleShowLogs = (value) => {
+    setShowLogs(value);
+    setShowFault(false);
+  };
 
   const refetchUser = async () => {
     fetch(`${process.env.API_URL}/auth/me?id=${data.id}`, {
@@ -49,11 +60,11 @@ export const StudentInfo = ({ data }: StudentProps) => {
     if (user) {
       refetchUser();
     }
-  }, [user]);
+  }, []);
 
   return (
     <>
-      <Card className="w-full mt-4">
+      <Card className="w-full m-4">
         <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
           <Image
             src={`/images/${data.gender === "L" ? "boy.png" : "girl.png"}`}
@@ -92,6 +103,20 @@ export const StudentInfo = ({ data }: StudentProps) => {
             </>
           )}
 
+          {!isShowLogs ? (
+            <>
+              {" "}
+              <Button
+                variant="filled"
+                fullWidth
+                size="md"
+                color="blue-gray"
+                onClick={() => handleShowLogs(true)}>
+                Riwayat Pelanggaran
+              </Button>
+            </>
+          ) : null}
+
           <Button variant="text" fullWidth size="md" color="red" onClick={data.callback}>
             Keluar
           </Button>
@@ -107,6 +132,14 @@ export const StudentInfo = ({ data }: StudentProps) => {
               alert("Pelanggaran berhasil ditambahkan");
             }}
           />
+        </>
+      ) : (
+        ""
+      )}
+
+      {isShowLogs ? (
+        <>
+          <LogFault userId={data.id} onClose={() => handleShowLogs(false)} />
         </>
       ) : (
         ""
