@@ -1,0 +1,13 @@
+.avatar {
+  margin-top: -2.5rem;
+}
+
+.avatar img {
+  margin: auto;
+}
+
+.footer {
+  @apply flex flex-col;
+  gap: .5rem;
+  padding-top: 0;
+}

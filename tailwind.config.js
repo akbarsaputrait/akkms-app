@@ -2,19 +2,9 @@ const withMT = require("@material-tailwind/react/utils/withMT");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = withMT({
-  content: [],
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      spacing: {
-        13: "3.25rem",
-        15: "3.75rem",
-        18: "4.5rem",
-        22: "5.5rem",
-        26: "6.5rem",
-        30: "7.5rem",
-        50: "12.5rem",
-        90: "22.5rem",
-      },
       colors: ({ colors }) => ({
         inherit: colors.inherit,
         current: colors.current,

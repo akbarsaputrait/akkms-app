@@ -1,0 +1,12 @@
+.cardBody {
+  @apply flex flex-col;
+  gap: 1rem;
+}
+
+.avatar {
+  margin-top: -2.5rem;
+}
+
+.avatar img {
+  margin: auto;
+}

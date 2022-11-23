@@ -16,10 +16,6 @@
   @apply fill-sky-200;
 }
 
-.wavy path {
-  @apply fill-slate-900;
-}
-
 .homeContainer {
   @apply container mx-auto px-4;
   z-index: 1;
