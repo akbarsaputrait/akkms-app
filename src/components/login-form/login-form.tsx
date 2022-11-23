@@ -24,7 +24,7 @@ export default function LoginForm({ callback }: LoginProps) {
 
   const requestLogin = () => {
     setLoading(true);
-    fetch("http://localhost:3000/api/auth", {
+    fetch("https://akkms-sma1ngawi.up.railway.app/api/auth", {
       method: "post",
       headers: {
         Accept: "application/json",
