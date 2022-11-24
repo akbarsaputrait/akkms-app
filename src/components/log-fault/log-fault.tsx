@@ -9,7 +9,7 @@ interface LogFaultProps {
 export const LogFault = ({ userId, onClose }: LogFaultProps) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(userId);
+  const [user] = useState(userId);
 
   useEffect(() => {
     const fetchingLogs = async () => {
