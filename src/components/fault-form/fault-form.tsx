@@ -40,8 +40,8 @@ export const FaultForm = ({ userId, onCancel, onSubmit }: FaultProps) => {
     })
       .then((response) => {
         if (response.ok) {
-          response.json().then(({ data }) => {
-            onSubmit(data);
+          response.json().then(() => {
+            onSubmit(userId);
             onCancel();
           });
         } else {

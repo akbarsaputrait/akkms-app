@@ -31,7 +31,7 @@ export const SelectConductNames = ({ typeId, onChange }: SelectConductNamesProps
     };
 
     fetchingTypes();
-  }, []);
+  }, [typeId]);
 
   const handleOnChange = (value: string) => {
     setValue(value);

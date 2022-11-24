@@ -9,11 +9,12 @@ interface LogFaultProps {
 export const LogFault = ({ userId, onClose }: LogFaultProps) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(userId);
 
   useEffect(() => {
     const fetchingLogs = async () => {
       setLoading(true);
-      const res = await fetch(`${process.env.API_URL}/logs?user=${userId}`, {
+      const res = await fetch(`${process.env.API_URL}/logs?user=${user}`, {
         method: "get",
         headers: {
           Accept: "application/json",
@@ -29,7 +30,7 @@ export const LogFault = ({ userId, onClose }: LogFaultProps) => {
     };
 
     fetchingLogs();
-  }, []);
+  }, [user]);
 
   return (
     <>

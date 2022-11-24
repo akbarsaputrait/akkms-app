@@ -29,6 +29,8 @@ interface StudentProps {
 
 export const StudentInfo = ({ data }: StudentProps) => {
   const [user, setUser] = useState(data);
+  const [userId, setUserId] = useState(data.id);
+  const [loading, setLoading] = useState(false);
 
   const [isShowFault, setShowFault] = useState(false);
   const handleShowFault = (value) => {
@@ -42,32 +44,45 @@ export const StudentInfo = ({ data }: StudentProps) => {
     setShowFault(false);
   };
 
-  const refetchUser = async () => {
-    fetch(`${process.env.API_URL}/auth/me?id=${data.id}`, {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((data) => setUser(data));
-      }
-    });
+  const handleonSubmit = (userId) => {
+    alert("Pelanggaran berhasil ditambahkan");
+    setUserId("");
+    setTimeout(() => {
+      setUserId(userId);
+    }, 150);
   };
 
   useEffect(() => {
-    if (user) {
-      refetchUser();
-    }
-  }, []);
+    setLoading(true);
+    const refetchUser = async () => {
+      if (userId != "") {
+        fetch(`${process.env.API_URL}/auth/me?id=${userId}`, {
+          method: "get",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              response.json().then(({ data }) => setUser(data));
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    };
+
+    refetchUser();
+  }, [userId]);
 
   return (
     <>
       <Card className="w-full m-4">
         <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
           <Image
-            src={`/images/${data.gender === "L" ? "boy.png" : "girl.png"}`}
+            src={`/images/${user.gender === "L" ? "boy.png" : "girl.png"}`}
             alt="profile-picture"
             width={300}
             height={140}
@@ -76,18 +91,29 @@ export const StudentInfo = ({ data }: StudentProps) => {
         </CardHeader>
         <CardBody className="text-center p-4">
           <Typography variant="h6" className="mb-2 text-gray-500 font-normal">
-            Nomor Induk Siswa: {data.nis || "-"}
+            Nomor Induk Siswa: {user.nis || "-"}
           </Typography>
           <Typography variant="h5" color="blue-gray" className="mb-2">
-            {data.name || "-"}
+            {user.name || "-"}
           </Typography>
           <Typography color="blue" className="font-medium" textGradient>
-            {data.class || "-"}
+            {user.class || "-"}
           </Typography>
           <Typography className="mt-4" variant="paragraph">
             Scores:
           </Typography>
-          <Typography variant="h2">{data.scores || 0}</Typography>
+          {loading ? (
+            <>
+              <div className={styles.ldsRipple}>
+                <div></div>
+                <div></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <Typography variant="h2">{user.scores || 0}</Typography>
+            </>
+          )}
         </CardBody>
 
         <CardFooter className={styles.footer}>
@@ -126,10 +152,10 @@ export const StudentInfo = ({ data }: StudentProps) => {
       {isShowFault ? (
         <>
           <FaultForm
-            userId={data.id}
+            userId={userId}
             onCancel={() => handleShowFault(false)}
-            onSubmit={() => {
-              alert("Pelanggaran berhasil ditambahkan");
+            onSubmit={(user) => {
+              handleonSubmit(user);
             }}
           />
         </>
@@ -139,7 +165,7 @@ export const StudentInfo = ({ data }: StudentProps) => {
 
       {isShowLogs ? (
         <>
-          <LogFault userId={data.id} onClose={() => handleShowLogs(false)} />
+          <LogFault userId={user.id} onClose={() => handleShowLogs(false)} />
         </>
       ) : (
         ""
