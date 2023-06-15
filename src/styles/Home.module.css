@@ -17,7 +17,7 @@
 }
 
 .homeContainer {
-  @apply container mx-auto px-4;
+  @apply container mx-auto px-4 max-w-xl;
   z-index: 1;
 }
 
