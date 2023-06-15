@@ -53,6 +53,12 @@ export default function LoginForm({ callback }: LoginProps) {
       });
   };
 
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 13) {
+      requestLogin();
+    }
+  };
+
   return (
     <Card className="w-full">
       <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
@@ -92,6 +98,7 @@ export default function LoginForm({ callback }: LoginProps) {
           type="password"
           value={pin}
           onChange={(e) => setPin(e.target.value)}
+          onKeyDown={handleKeyPress}
           required
         />
       </CardBody>
