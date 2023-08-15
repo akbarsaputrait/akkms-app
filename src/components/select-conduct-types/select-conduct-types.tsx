@@ -41,7 +41,7 @@ export const SelectConductTypes = ({ onChange }: SelectConductTypesProps) => {
     <>
       <label
         htmlFor="countries"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+        className="block mb-2 text-sm font-normal text-gray-900 dark:text-gray-400">
         Pilih Jenis Pelanggaran
       </label>
       <select

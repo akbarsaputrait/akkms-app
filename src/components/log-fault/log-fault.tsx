@@ -83,10 +83,15 @@ const LogDetail = ({ log }) => {
       <li className="py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
+            <p className="text-xs text-gray-500 truncate dark:text-white">{log.conduct_type}</p>
             <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{log.name}</p>
             <p className="text-sm text-gray-500 truncate dark:text-gray-400">{date}</p>
           </div>
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+          <div
+            className={`inline-flex items-center text-base font-semibold ${
+              log.type === "NEGATIVE" ? "text-red-500" : "text-green-500"
+            }`}>
+            {log.type === "NEGATIVE" ? "+" : "-"}
             {log.score}
           </div>
         </div>

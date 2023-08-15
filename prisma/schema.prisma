@@ -17,7 +17,7 @@ enum Role {
 
 enum Violationlevel {
   MINOR
-  DISTRUPTIVE
+  DISRUPTIVE
   MODERATE
   SERIOUS
   MAJOR

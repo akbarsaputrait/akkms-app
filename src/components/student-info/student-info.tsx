@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
-import Image from "next/image";
+import { Button, Card, CardBody, CardFooter, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
 import { FaultForm } from "../fault-form/fault-form";
@@ -20,6 +12,11 @@ interface Student {
   gender: "L" | "P";
   class: string;
   scores: number;
+  violation?: {
+    action: string;
+    name: string;
+    level: "minor" | "disruptive" | "moderate" | "serious" | "major";
+  };
   callback: () => void;
 }
 
@@ -36,12 +33,21 @@ export const StudentInfo = ({ data }: StudentProps) => {
   const handleShowFault = (value) => {
     setShowFault(value);
     setShowLogs(false);
+    setShowReward(false);
+  };
+
+  const [isShowReward, setShowReward] = useState(false);
+  const handleShowReward = (value) => {
+    setShowReward(value);
+    setShowFault(false);
+    setShowLogs(false);
   };
 
   const [isShowLogs, setShowLogs] = useState(false);
   const handleShowLogs = (value) => {
     setShowLogs(value);
     setShowFault(false);
+    setShowReward(false);
   };
 
   const handleonSubmit = (userId) => {
@@ -50,6 +56,23 @@ export const StudentInfo = ({ data }: StudentProps) => {
     setTimeout(() => {
       setUserId(userId);
     }, 150);
+  };
+
+  const violationTextColor = (level) => {
+    switch (level) {
+      case "minor":
+        return "text-blue-500";
+      case "disruptive":
+        return "text-yellow-500";
+      case "moderate":
+        return "text-orange-500";
+      case "serious":
+        return "text-red-500";
+      case "major":
+        return "text-purple-500";
+      default:
+        return "text-gray-500";
+    }
   };
 
   useEffect(() => {
@@ -80,7 +103,7 @@ export const StudentInfo = ({ data }: StudentProps) => {
   return (
     <>
       <Card className="w-full m-4">
-        <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
+        {/* <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
           <Image
             src={`/images/${user.gender === "L" ? "boy.png" : "girl.png"}`}
             alt="profile-picture"
@@ -88,7 +111,7 @@ export const StudentInfo = ({ data }: StudentProps) => {
             height={140}
             priority
           />
-        </CardHeader>
+        </CardHeader> */}
         <CardBody className="text-center p-4">
           <Typography variant="h6" className="mb-2 text-gray-500 font-normal">
             Nomor Induk Siswa: {user.nis || "-"}
@@ -100,7 +123,7 @@ export const StudentInfo = ({ data }: StudentProps) => {
             {user.class || "-"}
           </Typography>
           <Typography className="mt-4" variant="paragraph">
-            Scores:
+            Skor:
           </Typography>
           {loading ? (
             <>
@@ -112,19 +135,39 @@ export const StudentInfo = ({ data }: StudentProps) => {
           ) : (
             <>
               <Typography variant="h2">{user.scores || 0}</Typography>
+              {user.violation ? (
+                <>
+                  <Typography
+                    variant="h6"
+                    className={`mb-2 font-bold text-md ${violationTextColor(
+                      user.violation.level,
+                    )}`}>
+                    Hukuman: {user.violation.action}
+                  </Typography>
+                </>
+              ) : null}
             </>
           )}
         </CardBody>
 
         <CardFooter className={styles.footer}>
-          <Typography variant="small" className="flex justify-center">
-            Apa kamu melanggar lagi? 😭
-          </Typography>
-
           {isShowFault ? null : (
             <>
-              <Button variant="filled" fullWidth size="md" onClick={() => handleShowFault(true)}>
-                Pilih Pelanggaran
+              <Button
+                variant="filled"
+                fullWidth
+                size="md"
+                onClick={() => handleShowFault(true)}
+                color="red">
+                Pelanggaran
+              </Button>
+            </>
+          )}
+
+          {isShowReward ? null : (
+            <>
+              <Button variant="filled" fullWidth size="md" color="green">
+                Reward
               </Button>
             </>
           )}
@@ -136,9 +179,9 @@ export const StudentInfo = ({ data }: StudentProps) => {
                 variant="filled"
                 fullWidth
                 size="md"
-                color="blue-gray"
+                color="white"
                 onClick={() => handleShowLogs(true)}>
-                Riwayat Pelanggaran
+                Riwayat
               </Button>
             </>
           ) : null}

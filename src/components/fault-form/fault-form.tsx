@@ -58,7 +58,14 @@ export const FaultForm = ({ userId, onCancel, onSubmit }: FaultProps) => {
   return (
     <Card className="w-full mt-4">
       <CardBody className={styles.formFault}>
-        <Typography variant="paragraph">Hari & Tanggal:</Typography>
+        <div className="flex justify-between items-center mb-4">
+          <Typography variant="lead">Pelanggaran</Typography>
+          <Button size="sm" color="red" variant="outlined" onClick={onCancel}>
+            Tutup
+          </Button>
+        </div>
+
+        <p className="mb-0">Hari dan Tanggal:</p>
         <b className="mt-0">{date}</b>
 
         <Alert
@@ -87,9 +94,6 @@ export const FaultForm = ({ userId, onCancel, onSubmit }: FaultProps) => {
           disabled={loading || !typeId || !nameId}
           onClick={requestConduct}>
           {loading ? "Mohon tunggu..." : "Simpan"}
-        </Button>
-        <Button variant="outlined" fullWidth size="md" color="blue-gray" onClick={onCancel}>
-          Batalkan Pelanggaran
         </Button>
       </CardBody>
     </Card>

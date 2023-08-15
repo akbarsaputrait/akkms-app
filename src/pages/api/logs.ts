@@ -19,6 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           select: {
             id: true,
             createdAt: true,
+            type: true,
             codeOfConduct: {
               select: {
                 type: {
@@ -40,7 +41,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return {
           id: item.id,
           createdAt: item.createdAt,
-          type: item.codeOfConduct.type.name,
+          type: item.type,
+          conduct_type: item.codeOfConduct.type.name,
           name: item.codeOfConduct.name.name,
           score: item.codeOfConduct.name.score,
         };

@@ -6,7 +6,8 @@ const prisma = new PrismaClient();
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET": {
-      const data = await prisma.
+      const data = await prisma.reward.findMany();
+      return res.json({ data });
     }
   }
 };
