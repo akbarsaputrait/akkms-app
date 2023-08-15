@@ -1,0 +1,4 @@
+.formReward {
+  @apply flex flex-col;
+  gap: 1rem;
+}

@@ -45,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (data) {
         data.class = `${data.UserClass[0].class.grade.name} ${data.UserClass[0].class.type.name}`;
 
-        const violationLevel = await prisma.violation.findFirstOrThrow({
+        const violationLevel = await prisma.violation.findFirst({
           where: {
             AND: {
               min_score: {

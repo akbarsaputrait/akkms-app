@@ -37,3 +37,7 @@ a:active {
 .h-fit {
   height: fit-content !important;
 }
+
+.wrap-balance {
+  text-wrap: balance !important;
+}

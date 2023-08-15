@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ChangePinForm } from "../change-pin-form/change-pin-form";
 import { FaultForm } from "../fault-form/fault-form";
 import { LogFault } from "../log-fault/log-fault";
+import { RewardForm } from "../reward-form/reward-form";
 import styles from "./student-info.module.css";
 
 interface Student {
@@ -51,8 +52,9 @@ export const StudentInfo = ({ data }: StudentProps) => {
     setShowReward(false);
   };
 
-  const handleonSubmit = (userId) => {
-    alert("Pelanggaran berhasil ditambahkan");
+  const handleOnSubmit = (userId, message = "") => {
+    if (message) alert(message);
+
     setUserId("");
     setTimeout(() => {
       setUserId(userId);
@@ -62,17 +64,6 @@ export const StudentInfo = ({ data }: StudentProps) => {
   const [isChangePin, setChangePin] = useState(false);
   const handleChangePin = (value) => {
     setChangePin(value);
-  };
-
-  const [oldPin, setOldPin] = useState("");
-  const [newPin, setNewPin] = useState("");
-  const handleSubmitPin = () => {
-    if (newPin === oldPin) {
-      alert("PIN berhasil diganti");
-      handleOpen();
-    } else {
-      alert("PIN lama tidak sesuai");
-    }
   };
 
   const violationTextColor = (level) => {
@@ -185,7 +176,12 @@ export const StudentInfo = ({ data }: StudentProps) => {
 
               {isShowReward ? null : (
                 <>
-                  <Button variant="gradient" fullWidth size="md" color="green">
+                  <Button
+                    variant="gradient"
+                    fullWidth
+                    size="md"
+                    color="green"
+                    onClick={handleShowReward}>
                     Reward
                   </Button>
                 </>
@@ -212,21 +208,35 @@ export const StudentInfo = ({ data }: StudentProps) => {
                 userId={userId}
                 onCancel={() => handleShowFault(false)}
                 onSubmit={(user) => {
-                  handleonSubmit(user);
+                  handleOnSubmit(
+                    user,
+                    "Pelanggaran berhasil ditambahkan. Jangan melanggar lagi yaa 🥺",
+                  );
                 }}
               />
             </>
-          ) : (
-            ""
-          )}
+          ) : null}
 
           {isShowLogs ? (
             <>
               <LogFault userId={user.id} onClose={() => handleShowLogs(false)} />
             </>
-          ) : (
-            ""
-          )}
+          ) : null}
+
+          {isShowReward ? (
+            <>
+              <RewardForm
+                userId={user.id}
+                onCancel={() => handleShowReward(false)}
+                onSubmit={(user) => {
+                  handleOnSubmit(
+                    user,
+                    "Reward berhasil ditambahkan. Selamat dan sukses selalu 😇🥰",
+                  );
+                }}
+              />
+            </>
+          ) : null}
 
           <Button variant="text" fullWidth size="md" onClick={handleChangePin}>
             Ganti PIN

@@ -84,7 +84,9 @@ const LogDetail = ({ log }) => {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs text-gray-500 truncate dark:text-white">{log.conduct_type}</p>
-            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{log.name}</p>
+            <p className="text-sm font-medium text-gray-900 truncate dark:text-white wrap-balance">
+              {log.name}
+            </p>
             <p className="text-sm text-gray-500 truncate dark:text-gray-400">{date}</p>
           </div>
           <div

@@ -20,6 +20,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             id: true,
             createdAt: true,
             type: true,
+            reward: {
+              select: {
+                name: true,
+                score: true,
+              },
+            },
             codeOfConduct: {
               select: {
                 type: {
@@ -38,14 +44,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
       ).map((item) => {
-        return {
-          id: item.id,
-          createdAt: item.createdAt,
-          type: item.type,
-          conduct_type: item.codeOfConduct.type.name,
-          name: item.codeOfConduct.name.name,
-          score: item.codeOfConduct.name.score,
-        };
+        let res = {};
+        if (item.type === "NEGATIVE") {
+          res = {
+            id: item.id,
+            createdAt: item.createdAt,
+            type: item.type,
+            conduct_type: item.codeOfConduct.type.name,
+            name: item.codeOfConduct.name.name,
+            score: item.codeOfConduct.name.score,
+          };
+        } else {
+          res = {
+            id: item.id,
+            createdAt: item.createdAt,
+            type: item.type,
+            conduct_type: null,
+            name: item.reward.name,
+            score: item.reward.score,
+          };
+        }
+
+        return res;
       });
 
       return res.status(200).json({ data, message: "Berhasil mendapatkan logs" });
