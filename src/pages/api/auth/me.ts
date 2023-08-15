@@ -46,6 +46,38 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data.class = `${data.UserClass[0].class.grade.name} ${data.UserClass[0].class.type.name}`;
         res.json({ data, message: "Siswa ditemukan" });
       }
+      break;
+    }
+    case "POST": {
+      const { body } = req;
+      const { nis, oldPin, newPin } = body;
+
+      const isExist = await prisma.user.findFirst({
+        where: {
+          nis: {
+            equals: nis.toString(),
+          },
+          pin: {
+            equals: oldPin.toString(),
+          },
+        },
+      });
+
+      if (!isExist) {
+        res.json({ message: "PIN lama anda mungkin salah" });
+        return;
+      }
+
+      const data = await prisma.user.update({
+        where: {
+          nis: {
+            equals: nis.toString(),
+          },
+          pin: {
+            equals: oldPin.toString(),
+          },
+        },
+      });
     }
   }
 };

@@ -65,21 +65,19 @@ export default function LoginForm({ callback }: LoginProps) {
         <Image
           src="/images/boy-and-girl.png"
           alt="profile-picture"
-          width={300}
-          height={140}
+          width={250}
+          height={100}
           priority
         />
       </CardHeader>
       <CardBody className={styles.cardBody}>
         <Alert
-          show={error != ""}
+          open={error != ""}
           animate={{
             mount: { y: 0 },
             unmount: { y: 100 },
           }}
-          dismissible={{
-            onClose: () => setError(""),
-          }}
+          onClose={() => setError("")}
           color="red">
           {error}
         </Alert>

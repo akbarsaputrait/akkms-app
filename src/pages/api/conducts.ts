@@ -73,10 +73,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
+      const scores = Number(checkUser.scores) + Number(checkCond.name.score);
+
       const data = await prisma.userCodeOfConduct.create({
         data: {
           userId: user,
           codeOfConductId: conduct,
+          score: checkCond.name.score,
+          type: "NEGATIVE",
         },
       });
 
@@ -85,12 +89,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           id: user,
         },
         data: {
-          scores: Number(checkUser.scores) + Number(checkCond.name.score),
+          scores,
         },
       });
 
       if (data) {
-        return res.status(200).json({ data, message: "Pelanggaran berhasil ditambahkan" });
+        return res.status(200).json({ data, message: "Bobot pelanggaran berhasil ditambahkan" });
       }
     }
   }

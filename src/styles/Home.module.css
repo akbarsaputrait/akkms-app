@@ -22,7 +22,7 @@
 }
 
 .header {
-  @apply pt-12 pb-8;
+  @apply pt-12 mb-10;
 }
 
 .main {

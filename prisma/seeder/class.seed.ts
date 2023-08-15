@@ -10,19 +10,7 @@ async function seedClass() {
 
   // Class Type
   await prisma.classType.createMany({
-    data: [
-      { name: "MIPA 1" },
-      { name: "MIPA 2" },
-      { name: "MIPA 3" },
-      { name: "MIPA 4" },
-      { name: "MIPA 5" },
-      { name: "MIPA 6" },
-      { name: "MIPA 7" },
-      { name: "MIPA 8" },
-      { name: "IPS 1" },
-      { name: "IPS 2" },
-      { name: "IPS 3" },
-    ],
+    data: [{ name: "MIPA 1" }],
   });
   console.log("ClassType successfully added");
 }
@@ -35,7 +23,11 @@ async function seedMainClass() {
 
   classType.forEach((type) => {
     classGrade.forEach((grade) => {
-      result.push({ classGradeId: grade.id, classTypeId: type.id });
+      result.push({
+        classGradeId: grade.id,
+        classTypeId: type.id,
+        name: `${grade.name} - ${type.name}`,
+      });
     });
   });
 

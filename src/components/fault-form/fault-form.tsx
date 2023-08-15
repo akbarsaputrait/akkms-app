@@ -62,14 +62,12 @@ export const FaultForm = ({ userId, onCancel, onSubmit }: FaultProps) => {
         <b className="mt-0">{date}</b>
 
         <Alert
-          show={error != ""}
+          open={error != ""}
           animate={{
             mount: { y: 0 },
             unmount: { y: 100 },
           }}
-          dismissible={{
-            onClose: () => setError(""),
-          }}
+          onClose={() => setError("")}
           color="red">
           {error}
         </Alert>

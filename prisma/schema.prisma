@@ -10,12 +10,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Sample
-model Todo {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  text      String
-  completed Boolean
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Violationlevel {
+  MINOR
+  DISTRUPTIVE
+  MODERATE
+  SERIOUS
+  MAJOR
+}
+
+enum UserCondeOfConductType {
+  POSITIVE
+  NEGATIVE
 }
 
 // AAKMS Models
@@ -28,12 +38,14 @@ model User {
   scores            Int                 @default(0)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @default(now())
+  role              Role                @default(STUDENT)
   UserClass         UserClass[]
   UserCodeOfConduct UserCodeOfConduct[]
 }
 
 model UserClass {
   id            String   @id @default(uuid())
+  name          String?  @db.VarChar(255)
   user          User     @relation(fields: [userId], references: [id])
   userId        String
   class         Class    @relation(fields: [classId], references: [id])
@@ -45,6 +57,7 @@ model UserClass {
 
 model Class {
   id           String      @id @default(uuid())
+  name         String      @unique
   grade        ClassGrade  @relation(fields: [classGradeId], references: [id])
   classGradeId String
   type         ClassType   @relation(fields: [classTypeId], references: [id])
@@ -76,9 +89,9 @@ model CodeOfConduct {
   codeOfConductNameId String
   type                CodeOfConductType   @relation(fields: [codeOfConductTypeId], references: [id])
   codeOfConductTypeId String
-  UserCodeOfConduct   UserCodeOfConduct[]
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @default(now())
+  UserCodeOfConduct   UserCodeOfConduct[]
 }
 
 model CodeOfConductType {
@@ -100,11 +113,35 @@ model CodeOfConductName {
 }
 
 model UserCodeOfConduct {
-  id              String        @id @default(uuid())
-  user            User          @relation(fields: [userId], references: [id])
+  id              String                 @id @default(uuid())
+  user            User                   @relation(fields: [userId], references: [id])
   userId          String
-  codeOfConduct   CodeOfConduct @relation(fields: [codeOfConductId], references: [id])
-  codeOfConductId String
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @default(now())
+  codeOfConduct   CodeOfConduct?         @relation(fields: [codeOfConductId], references: [id])
+  codeOfConductId String?
+  reward          Reward?                @relation(fields: [rewardId], references: [id])
+  rewardId        String?
+  score           Int                    @default(0)
+  type            UserCondeOfConductType @default(NEGATIVE)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @default(now())
+}
+
+model Violation {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  min_score Int
+  max_score Int
+  action    String
+  level     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Reward {
+  id                String              @id @default(uuid())
+  name              String              @unique
+  score             Int
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now())
+  UserCodeOfConduct UserCodeOfConduct[]
 }

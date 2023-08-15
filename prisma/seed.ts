@@ -1,6 +1,8 @@
 // seedClassData();
 
-import { seedStudent } from "./seeder/student";
+import { seedReward } from "./seeder/reward.seed";
 
+// seedClassData();
 // seedConductData();
-seedStudent();
+// sseedViolation();
+seedReward();
