@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, CardFooter, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
+import { ChangePinForm } from "../change-pin-form/change-pin-form";
 import { FaultForm } from "../fault-form/fault-form";
 import { LogFault } from "../log-fault/log-fault";
 import styles from "./student-info.module.css";
@@ -58,6 +59,22 @@ export const StudentInfo = ({ data }: StudentProps) => {
     }, 150);
   };
 
+  const [isChangePin, setChangePin] = useState(false);
+  const handleChangePin = (value) => {
+    setChangePin(value);
+  };
+
+  const [oldPin, setOldPin] = useState("");
+  const [newPin, setNewPin] = useState("");
+  const handleSubmitPin = () => {
+    if (newPin === oldPin) {
+      alert("PIN berhasil diganti");
+      handleOpen();
+    } else {
+      alert("PIN lama tidak sesuai");
+    }
+  };
+
   const violationTextColor = (level) => {
     switch (level) {
       case "minor":
@@ -102,8 +119,10 @@ export const StudentInfo = ({ data }: StudentProps) => {
 
   return (
     <>
-      <Card className="w-full m-4">
-        {/* <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
+      {!isChangePin ? (
+        <>
+          <Card className="w-full m-4">
+            {/* <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
           <Image
             src={`/images/${user.gender === "L" ? "boy.png" : "girl.png"}`}
             alt="profile-picture"
@@ -112,107 +131,114 @@ export const StudentInfo = ({ data }: StudentProps) => {
             priority
           />
         </CardHeader> */}
-        <CardBody className="text-center p-4">
-          <Typography variant="h6" className="mb-2 text-gray-500 font-normal">
-            Nomor Induk Siswa: {user.nis || "-"}
-          </Typography>
-          <Typography variant="h5" color="blue-gray" className="mb-2">
-            {user.name || "-"}
-          </Typography>
-          <Typography color="blue" className="font-medium" textGradient>
-            {user.class || "-"}
-          </Typography>
-          <Typography className="mt-4" variant="paragraph">
-            Skor:
-          </Typography>
-          {loading ? (
-            <>
-              <div className={styles.ldsRipple}>
-                <div></div>
-                <div></div>
-              </div>
-            </>
-          ) : (
-            <>
-              <Typography variant="h2">{user.scores || 0}</Typography>
-              {user.violation ? (
+            <CardBody className="text-center p-4">
+              <Typography variant="h6" className="mb-2 text-gray-500 font-normal">
+                Nomor Induk Siswa: {user.nis || "-"}
+              </Typography>
+              <Typography variant="h5" color="blue-gray" className="mb-2">
+                {user.name || "-"}
+              </Typography>
+              <Typography color="blue" className="font-medium" textGradient>
+                {user.class || "-"}
+              </Typography>
+              <Typography className="mt-4" variant="paragraph">
+                Skor:
+              </Typography>
+              {loading ? (
                 <>
-                  <Typography
-                    variant="h6"
-                    className={`mb-2 font-bold text-md ${violationTextColor(
-                      user.violation.level,
-                    )}`}>
-                    Hukuman: {user.violation.action}
-                  </Typography>
+                  <div className={styles.ldsRipple}>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Typography variant="h2">{user.scores || 0}</Typography>
+                  {user.violation ? (
+                    <>
+                      <Typography
+                        variant="h6"
+                        className={`mb-2 font-bold text-md ${violationTextColor(
+                          user.violation.level,
+                        )}`}>
+                        Hukuman: {user.violation.action}
+                      </Typography>
+                    </>
+                  ) : null}
+                </>
+              )}
+            </CardBody>
+
+            <CardFooter className={styles.footer}>
+              {isShowFault ? null : (
+                <>
+                  <Button
+                    variant="gradient"
+                    fullWidth
+                    size="md"
+                    onClick={() => handleShowFault(true)}
+                    color="red">
+                    Pelanggaran
+                  </Button>
+                </>
+              )}
+
+              {isShowReward ? null : (
+                <>
+                  <Button variant="gradient" fullWidth size="md" color="green">
+                    Reward
+                  </Button>
+                </>
+              )}
+
+              {!isShowLogs ? (
+                <>
+                  {" "}
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    size="md"
+                    onClick={() => handleShowLogs(true)}>
+                    Riwayat
+                  </Button>
                 </>
               ) : null}
-            </>
-          )}
-        </CardBody>
+            </CardFooter>
+          </Card>
 
-        <CardFooter className={styles.footer}>
-          {isShowFault ? null : (
+          {isShowFault ? (
             <>
-              <Button
-                variant="filled"
-                fullWidth
-                size="md"
-                onClick={() => handleShowFault(true)}
-                color="red">
-                Pelanggaran
-              </Button>
+              <FaultForm
+                userId={userId}
+                onCancel={() => handleShowFault(false)}
+                onSubmit={(user) => {
+                  handleonSubmit(user);
+                }}
+              />
             </>
-          )}
-
-          {isShowReward ? null : (
-            <>
-              <Button variant="filled" fullWidth size="md" color="green">
-                Reward
-              </Button>
-            </>
+          ) : (
+            ""
           )}
 
-          {!isShowLogs ? (
+          {isShowLogs ? (
             <>
-              {" "}
-              <Button
-                variant="filled"
-                fullWidth
-                size="md"
-                color="white"
-                onClick={() => handleShowLogs(true)}>
-                Riwayat
-              </Button>
+              <LogFault userId={user.id} onClose={() => handleShowLogs(false)} />
             </>
-          ) : null}
+          ) : (
+            ""
+          )}
 
-          <Button variant="text" fullWidth size="md" color="red" onClick={data.callback}>
-            Keluar
+          <Button variant="text" fullWidth size="md" onClick={handleChangePin}>
+            Ganti PIN
           </Button>
-        </CardFooter>
-      </Card>
-
-      {isShowFault ? (
-        <>
-          <FaultForm
-            userId={userId}
-            onCancel={() => handleShowFault(false)}
-            onSubmit={(user) => {
-              handleonSubmit(user);
-            }}
-          />
         </>
       ) : (
-        ""
+        <ChangePinForm userId={user.id} onClose={() => setChangePin(false)} />
       )}
 
-      {isShowLogs ? (
-        <>
-          <LogFault userId={user.id} onClose={() => handleShowLogs(false)} />
-        </>
-      ) : (
-        ""
-      )}
+      <Button variant="text" fullWidth size="md" color="red" onClick={data.callback}>
+        Keluar
+      </Button>
     </>
   );
 };

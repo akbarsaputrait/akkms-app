@@ -66,21 +66,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
     case "PUT": {
       const { body } = req;
-      const { nis, oldPin, newPin } = body;
+      const { user, oldPin, newPin } = body;
 
       const isExist = await prisma.user.findFirst({
         where: {
-          nis: {
-            equals: nis.toString(),
-          },
-          pin: {
-            equals: oldPin.toString(),
+          AND: {
+            id: {
+              equals: user.toString(),
+            },
+            pin: {
+              equals: oldPin.toString(),
+            },
           },
         },
       });
 
       if (!isExist) {
-        res.json({ message: "PIN lama anda mungkin salah" });
+        res.status(401).json({ message: "PIN lama anda mungkin salah" });
         return;
       }
 
