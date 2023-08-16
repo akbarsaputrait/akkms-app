@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { query } = req;
       const { id } = query;
 
-      const data = (await prisma.user.findFirstOrThrow({
+      const data = (await prisma.user.findFirst({
         where: {
           id: {
             equals: id.toString(),
@@ -61,6 +61,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data.violation = violationLevel || null;
 
         res.json({ data, message: "Siswa ditemukan" });
+      } else {
+        res.status(404).json({ message: "Siswa tidak ditemukan" });
       }
       break;
     }

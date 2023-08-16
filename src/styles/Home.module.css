@@ -43,12 +43,18 @@
 }
 
 .title,
-.desc {
+.desc,
+.desc2 {
   @apply text-center;
 }
 
-.desc {
+.desc,
+.desc2 {
   @apply text-base;
+}
+
+.desc2 {
+  @apply mt-4;
 }
 
 .addTodo {

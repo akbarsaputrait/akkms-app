@@ -75,9 +75,9 @@ export const StudentInfo = ({ data }: StudentProps) => {
       case "moderate":
         return "text-orange-500";
       case "serious":
-        return "text-red-500";
-      case "major":
         return "text-purple-500";
+      case "major":
+        return "text-red-500";
       default:
         return "text-gray-500";
     }

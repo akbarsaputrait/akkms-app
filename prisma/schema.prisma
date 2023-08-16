@@ -10,11 +10,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum Role {
-  STUDENT
-  ADMIN
-}
-
 enum Violationlevel {
   MINOR
   DISRUPTIVE
@@ -38,7 +33,6 @@ model User {
   scores            Int                 @default(0)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @default(now())
-  role              Role                @default(STUDENT)
   UserClass         UserClass[]
   UserCodeOfConduct UserCodeOfConduct[]
 }
@@ -144,4 +138,13 @@ model Reward {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @default(now())
   UserCodeOfConduct UserCodeOfConduct[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  username  String   @unique
+  password  String   @db.VarChar()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }

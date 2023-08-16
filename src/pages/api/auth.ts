@@ -36,11 +36,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         },
         where: {
-          nis: {
-            equals: nis.toString(),
-          },
-          pin: {
-            equals: pin.toString(),
+          AND: {
+            nis: {
+              equals: nis.toString(),
+            },
+            pin: {
+              equals: pin.toString(),
+            },
           },
         },
       })) as any;
