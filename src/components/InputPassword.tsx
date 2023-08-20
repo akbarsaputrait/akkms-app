@@ -6,9 +6,10 @@ interface InputPasswordProps {
   label: string;
   disabled?: boolean;
   required?: boolean;
+  onKeyPress?: (event) => void;
 }
 
-const InputPassword = ({ label, disabled, required, onChange }: InputPasswordProps) => {
+const InputPassword = ({ label, disabled, required, onChange, onKeyPress }: InputPasswordProps) => {
   const [type, setType] = useState<"password" | "text">("password");
 
   const handleToggle = (e, val) => {
@@ -24,6 +25,7 @@ const InputPassword = ({ label, disabled, required, onChange }: InputPasswordPro
         type={type}
         disabled={disabled}
         required={required}
+        onKeyUp={onKeyPress}
       />
 
       <Button

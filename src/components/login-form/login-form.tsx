@@ -97,6 +97,7 @@ export default function LoginForm({ callback }: LoginProps) {
           label="PIN"
           onChange={(value) => setPin(value)}
           disabled={loading}
+          onKeyPress={handleKeyPress}
           required
         />
       </CardBody>
