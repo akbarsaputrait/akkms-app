@@ -10,7 +10,7 @@ async function seedClass() {
 
   // Class Type
   await prisma.classType.createMany({
-    data: [{ name: "MIPA 1" }],
+    data: [{ name: "A" }, { name: "B" }],
   });
   console.log("ClassType successfully added");
 }

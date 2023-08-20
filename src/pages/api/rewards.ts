@@ -25,34 +25,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      const checkReward = await prisma.reward.findFirstOrThrow({
-        select: {
-          score: true,
-        },
-        where: {
-          id: {
-            equals: reward,
-          },
-        },
-      });
-
-      const newScore = checkUser.scores - checkReward.score;
-      console.log(newScore, checkUser, checkReward);
       const data = await prisma.userCodeOfConduct.create({
         data: {
           userId: checkUser.id,
           rewardId: reward,
-          score: newScore,
+          score: 0,
           type: "POSITIVE",
-        },
-      });
-
-      await prisma.user.update({
-        where: {
-          id: checkUser.id,
-        },
-        data: {
-          scores: newScore,
+          status: "PENDING",
         },
       });
 

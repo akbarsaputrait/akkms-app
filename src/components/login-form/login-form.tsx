@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
+import InputPassword from "../InputPassword";
 import styles from "./login-form.module.css";
 
 interface LoginProps {
@@ -88,15 +89,14 @@ export default function LoginForm({ callback }: LoginProps) {
           type="number"
           value={nis}
           onChange={(e) => setNis(e.target.value)}
+          disabled={loading}
           required
         />
-        <Input
+
+        <InputPassword
           label="PIN"
-          size="lg"
-          type="password"
-          value={pin}
-          onChange={(e) => setPin(e.target.value)}
-          onKeyDown={handleKeyPress}
+          onChange={(value) => setPin(value)}
+          disabled={loading}
           required
         />
       </CardBody>

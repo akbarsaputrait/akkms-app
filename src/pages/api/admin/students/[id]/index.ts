@@ -34,11 +34,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
       };
 
-      if (has(query, "studentId")) {
+      if (has(query, "id")) {
         const data = (await prisma.user.findFirst({
           select,
           where: {
-            id: query.studentId.toString(),
+            id: query.id.toString(),
           },
         })) as any;
 
@@ -61,48 +61,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           data.violation = violationLevel || null;
 
           res.json({ data, message: "Siswa ditemukan" });
-        } else {
-          res.status(404).json({ message: "Siswa tidak ditemukan" });
-        }
-      } else {
-        const data = (await prisma.user.findMany({
-          select,
-          orderBy: {
-            nis: "asc",
-          },
-        })) as any;
-
-        if (data) {
-          const results = [];
-
-          for (const student of data) {
-            student.class = `${student.UserClass[0].class.grade.name} ${student.UserClass[0].class.type.name}`;
-
-            const violationLevel = await prisma.violation.findFirst({
-              where: {
-                AND: {
-                  min_score: {
-                    lte: Number(student.scores),
-                  },
-                  max_score: {
-                    gte: Number(student.scores),
-                  },
-                },
-              },
-            });
-
-            student.violation = violationLevel || null;
-
-            results.push({
-              id: student.id,
-              nis: student.nis,
-              name: student.name,
-              scores: student.scores,
-              class: student.class,
-              violation: student.violation?.level || null,
-            });
-          }
-          res.json({ data: results, message: "Siswa ditemukan" });
         } else {
           res.status(404).json({ message: "Siswa tidak ditemukan" });
         }

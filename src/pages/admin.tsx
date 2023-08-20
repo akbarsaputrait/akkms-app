@@ -12,7 +12,6 @@ const Admin: NextPage = () => {
   const handleLogin = (data: any) => {
     if (data) {
       setLogin(true);
-      console.log(data);
       setAdmin(data);
     }
   };

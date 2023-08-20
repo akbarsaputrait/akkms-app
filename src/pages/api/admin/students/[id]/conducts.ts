@@ -7,13 +7,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET": {
       const { query } = req;
-      const { user } = query;
+      const { id } = query;
 
       const data = (
         await prisma.userCodeOfConduct.findMany({
           where: {
             userId: {
-              equals: user.toString(),
+              equals: id.toString(),
             },
           },
           select: {
@@ -81,6 +81,60 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       return res.status(200).json({ data, message: "Berhasil mendapatkan logs" });
+    }
+    case "PUT": {
+      const { body } = req;
+      const { id, status } = body;
+
+      const data = await prisma.userCodeOfConduct.update({
+        where: {
+          id: id,
+        },
+        data: {
+          status: status,
+        },
+        select: {
+          userId: true,
+          score: true,
+          status: true,
+          rewardId: true,
+        },
+      });
+
+      if (data && data.status === "APPROVED") {
+        const user = await prisma.user.findFirst({
+          where: {
+            id: data.userId,
+          },
+          select: {
+            scores: true,
+          },
+        });
+
+        const checkReward = await prisma.reward.findFirstOrThrow({
+          select: {
+            score: true,
+          },
+          where: {
+            id: {
+              equals: data.rewardId,
+            },
+          },
+        });
+
+        const newScore = user.scores - checkReward.score;
+
+        await prisma.user.update({
+          where: {
+            id: data.userId,
+          },
+          data: {
+            scores: newScore,
+          },
+        });
+      }
+
+      return res.status(200).json({ data, message: "Berhasil memperbarui logs" });
     }
   }
 };

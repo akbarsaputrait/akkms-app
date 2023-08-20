@@ -23,11 +23,17 @@ enum UserCondeOfConductType {
   NEGATIVE
 }
 
+enum UserCondeOfConductStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 // AAKMS Models
 model User {
   id                String              @id @default(uuid())
   nis               String              @unique
-  pin               String              @db.VarChar()
+  pin               String              @db.VarChar(255)
   name              String              @db.VarChar(255)
   gender            String
   scores            Int                 @default(0)
@@ -44,7 +50,7 @@ model UserClass {
   userId        String
   class         Class    @relation(fields: [classId], references: [id])
   classId       String
-  educationYear String   @db.VarChar()
+  educationYear String   @db.VarChar(255)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now())
 }
@@ -107,17 +113,18 @@ model CodeOfConductName {
 }
 
 model UserCodeOfConduct {
-  id              String                 @id @default(uuid())
-  user            User                   @relation(fields: [userId], references: [id])
+  id              String                   @id @default(uuid())
+  user            User                     @relation(fields: [userId], references: [id])
   userId          String
-  codeOfConduct   CodeOfConduct?         @relation(fields: [codeOfConductId], references: [id])
+  codeOfConduct   CodeOfConduct?           @relation(fields: [codeOfConductId], references: [id])
   codeOfConductId String?
-  reward          Reward?                @relation(fields: [rewardId], references: [id])
+  reward          Reward?                  @relation(fields: [rewardId], references: [id])
   rewardId        String?
-  score           Int                    @default(0)
-  type            UserCondeOfConductType @default(NEGATIVE)
-  createdAt       DateTime               @default(now())
-  updatedAt       DateTime               @default(now())
+  score           Int                      @default(0)
+  type            UserCondeOfConductType   @default(NEGATIVE)
+  status          UserCondeOfConductStatus @default(APPROVED)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @default(now())
 }
 
 model Violation {
@@ -144,7 +151,7 @@ model Admin {
   id        String   @id @default(uuid())
   name      String   @unique
   username  String   @unique
-  password  String   @db.VarChar()
+  password  String   @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

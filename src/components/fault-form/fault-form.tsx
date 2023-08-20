@@ -24,35 +24,39 @@ export const FaultForm = ({ userId, onCancel, onSubmit }: FaultProps) => {
   const [error, setError] = useState("");
 
   const requestConduct = async () => {
-    setLoading(true);
-    fetch(`${process.env.API_URL}/conducts`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+    const confirmed = confirm("Anda yakin untuk melanjutkan ini?");
 
-      //make sure to serialize your JSON body
-      body: JSON.stringify({
-        user: userId,
-        conduct: nameId,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then(() => {
-            onSubmit(userId);
-            onCancel();
-          });
-        } else {
-          response.json().then(({ message }) => {
-            setError(message);
-          });
-        }
+    if (confirmed) {
+      setLoading(true);
+      fetch(`${process.env.API_URL}/conducts`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+
+        //make sure to serialize your JSON body
+        body: JSON.stringify({
+          user: userId,
+          conduct: nameId,
+        }),
       })
-      .finally(() => {
-        setLoading(false);
-      });
+        .then((response) => {
+          if (response.ok) {
+            response.json().then(() => {
+              onSubmit(userId);
+              onCancel();
+            });
+          } else {
+            response.json().then(({ message }) => {
+              setError(message);
+            });
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   return (

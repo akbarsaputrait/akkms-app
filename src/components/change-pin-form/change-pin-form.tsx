@@ -1,13 +1,7 @@
-import {
-  Alert,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Input,
-  Typography,
-} from "@material-tailwind/react";
+import { Alert, Button, Card, CardBody, CardFooter, Typography } from "@material-tailwind/react";
 import { useState } from "react";
+
+import InputPassword from "../InputPassword";
 
 interface ChangePinProps {
   userId: string;
@@ -23,35 +17,38 @@ export const ChangePinForm = ({ userId, onClose }: ChangePinProps) => {
 
   const requestChangePin = async () => {
     setLoading(true);
-    fetch(`${process.env.API_URL}/auth/me`, {
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+    const confirmed = confirm("Anda yakin untuk mengganti PIN ini?");
+    if (confirmed) {
+      fetch(`${process.env.API_URL}/auth/me`, {
+        method: "put",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
 
-      //make sure to serialize your JSON body
-      body: JSON.stringify({
-        user: userId,
-        oldPin,
-        newPin,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then(() => {
-            alert("PIN berhasil diperbarui");
-            onClose();
-          });
-        } else {
-          response.json().then(({ message }) => {
-            setError(message);
-          });
-        }
+        //make sure to serialize your JSON body
+        body: JSON.stringify({
+          user: userId,
+          oldPin,
+          newPin,
+        }),
       })
-      .finally(() => {
-        setLoading(false);
-      });
+        .then((response) => {
+          if (response.ok) {
+            response.json().then(() => {
+              alert("PIN berhasil diperbarui");
+              onClose();
+            });
+          } else {
+            response.json().then(({ message }) => {
+              setError(message);
+            });
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   return (
@@ -67,23 +64,18 @@ export const ChangePinForm = ({ userId, onClose }: ChangePinProps) => {
           color="red">
           {error}
         </Alert>
-
         <Typography color="black" className="font-medium">
           Ganti PIN
         </Typography>
-        <Input
+        <InputPassword
           label="PIN Lama"
-          size="lg"
-          onChange={(e) => setOldPin(e.target.value)}
-          type="tel"
+          onChange={(value) => setOldPin(value)}
           disabled={loading}
           required
         />
-        <Input
+        <InputPassword
           label="PIN Baru"
-          size="lg"
-          onChange={(e) => setNewPin(e.target.value)}
-          type="tel"
+          onChange={(value) => setNewPin(value)}
           disabled={loading}
           required
         />

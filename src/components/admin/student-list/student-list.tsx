@@ -1,13 +1,17 @@
 import { Card, Typography } from "@material-tailwind/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-import { dayjs } from "../../../services/day";
 import ExportExcel from "../../export-excel/export-excel";
+import { IStudent, StudentInfo } from "../../student-info/student-info";
 import styles from "./student-list.module.css";
 
 const StudentList = () => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [student, setStudent] = useState<IStudent>(null);
+  const [studentId, setStudentId] = useState(null);
 
   const violationTextColor = (level) => {
     switch (level) {
@@ -47,13 +51,44 @@ const StudentList = () => {
     fetchingLogs();
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    const refetchUser = async () => {
+      if (studentId) {
+        fetch(`${process.env.API_URL}/admin/students/${studentId}`, {
+          method: "get",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              response.json().then(({ data }) => setStudent(data));
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    };
+
+    refetchUser();
+  }, [studentId]);
+
+  const handleStudentId = (event, id: string) => {
+    setStudentId(id);
+  };
+
   const TABLE_HEAD = ["NISN", "Name", "Scores"];
 
-  return (
+  return student ? (
+    <StudentInfo data={student} isAdmin />
+  ) : (
     <>
       <ExportExcel
         excelData={list}
-        fileName={`${dayjs().unix()}-student-list`}
+        fileName={`student-list-${dayjs().unix()}`}
         disabled={loading}
       />
       <Card className="h-full w-full overflow-scroll">
@@ -99,7 +134,8 @@ const StudentList = () => {
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal uppercase">
+                          className="font-normal uppercase text-blue-700 cursor-pointer"
+                          onClick={(e) => handleStudentId(e, id)}>
                           {name}
                         </Typography>
                       </td>

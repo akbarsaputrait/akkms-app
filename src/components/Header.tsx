@@ -13,8 +13,8 @@ export const Header = () => {
           width={300}
           height={297}
         />
-        <h1 className={styles.title}>SMAN 1 NGRAMBE</h1>
-        <h2 className={styles.desc}>JEMPARING APP</h2>
+        <h1 className={styles.title}>JEMPARING</h1>
+        <h2 className={styles.desc}>Bidik Karakter SMAN 1 Ngrambe</h2>
         <h4 className={styles.desc2}>
           Kepala Sekolah <br /> <b>Dr. Tjahjono Widijanto, M.Pd.</b>
         </h4>

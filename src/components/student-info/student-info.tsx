@@ -7,7 +7,7 @@ import { LogFault } from "../log-fault/log-fault";
 import { RewardForm } from "../reward-form/reward-form";
 import styles from "./student-info.module.css";
 
-interface Student {
+export interface IStudent {
   id: string;
   nis: string;
   name: string;
@@ -19,14 +19,15 @@ interface Student {
     name: string;
     level: "minor" | "disruptive" | "moderate" | "serious" | "major";
   };
-  callback: () => void;
 }
 
 interface StudentProps {
-  data: Student;
+  data: IStudent;
+  isAdmin: boolean;
+  callback?: () => void;
 }
 
-export const StudentInfo = ({ data }: StudentProps) => {
+export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) => {
   const [user, setUser] = useState(data);
   const [userId, setUserId] = useState(data.id);
   const [loading, setLoading] = useState(false);
@@ -83,11 +84,42 @@ export const StudentInfo = ({ data }: StudentProps) => {
     }
   };
 
+  const handleOnConfirm = (e, id, status) => {
+    e.preventDefault();
+    const confirmed = confirm("Anda yakin untuk mengkonfirmasi reward ini?");
+    if (confirmed) {
+      fetch(`${process.env.API_URL}/admin/students/${userId}/conducts`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, status }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            response.json().then(({ data }) => {
+              handleOnSubmit(data.userId, "Berhasil memperbarui reward");
+              setShowLogs(false);
+              const timeout = setTimeout(() => {
+                setShowLogs(true);
+              }, 150);
+              clearTimeout(timeout);
+            });
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     const refetchUser = async () => {
       if (userId != "") {
-        fetch(`${process.env.API_URL}/auth/me?id=${userId}`, {
+        const endpoint = isAdmin ? `admin/students/${userId}` : `auth/me/?id=${userId}`;
+        fetch(`${process.env.API_URL}/${endpoint}`, {
           method: "get",
           headers: {
             Accept: "application/json",
@@ -106,13 +138,13 @@ export const StudentInfo = ({ data }: StudentProps) => {
     };
 
     refetchUser();
-  }, [userId]);
+  }, [userId, isAdmin]);
 
   return (
     <>
       {!isChangePin ? (
-        <>
-          <Card className="w-full m-4">
+        <div className="flex flex-col gap-4 w-full">
+          <Card className="w-full">
             {/* <CardHeader floated={true} className={styles.avatar} shadow={false} color="transparent">
           <Image
             src={`/images/${user.gender === "L" ? "boy.png" : "girl.png"}`}
@@ -161,29 +193,33 @@ export const StudentInfo = ({ data }: StudentProps) => {
             </CardBody>
 
             <CardFooter className={styles.footer}>
-              {isShowFault ? null : (
+              {!isAdmin && (
                 <>
-                  <Button
-                    variant="gradient"
-                    fullWidth
-                    size="md"
-                    onClick={() => handleShowFault(true)}
-                    color="red">
-                    Pelanggaran
-                  </Button>
-                </>
-              )}
+                  {isShowFault ? null : (
+                    <>
+                      <Button
+                        variant="gradient"
+                        fullWidth
+                        size="md"
+                        onClick={() => handleShowFault(true)}
+                        color="red">
+                        Pelanggaran
+                      </Button>
+                    </>
+                  )}
 
-              {isShowReward ? null : (
-                <>
-                  <Button
-                    variant="gradient"
-                    fullWidth
-                    size="md"
-                    color="green"
-                    onClick={handleShowReward}>
-                    Reward
-                  </Button>
+                  {isShowReward ? null : (
+                    <>
+                      <Button
+                        variant="gradient"
+                        fullWidth
+                        size="md"
+                        color="green"
+                        onClick={handleShowReward}>
+                        Reward
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
 
@@ -219,7 +255,12 @@ export const StudentInfo = ({ data }: StudentProps) => {
 
           {isShowLogs ? (
             <>
-              <LogFault userId={user.id} onClose={() => handleShowLogs(false)} />
+              <LogFault
+                student={user}
+                onClose={() => handleShowLogs(false)}
+                isAdmin={isAdmin}
+                onConfirm={(e, id, status) => handleOnConfirm(e, id, status)}
+              />
             </>
           ) : null}
 
@@ -238,17 +279,21 @@ export const StudentInfo = ({ data }: StudentProps) => {
             </>
           ) : null}
 
-          <Button variant="text" fullWidth size="md" onClick={handleChangePin}>
-            Ganti PIN
-          </Button>
-        </>
+          {!isAdmin && (
+            <Button variant="text" fullWidth size="md" onClick={handleChangePin}>
+              Ganti PIN
+            </Button>
+          )}
+        </div>
       ) : (
         <ChangePinForm userId={user.id} onClose={() => setChangePin(false)} />
       )}
 
-      <Button variant="text" fullWidth size="md" color="red" onClick={data.callback}>
-        Keluar
-      </Button>
+      {!isAdmin && (
+        <Button variant="text" fullWidth size="md" color="red" onClick={callback}>
+          Keluar
+        </Button>
+      )}
     </>
   );
 };

@@ -1,7 +1,6 @@
 // seedClassData();
-// seedClassData();
 // seedConductData();
-// sseedViolation();
+// sedViolation();
 
 import { seedAdmin } from "./seeder/admin.seed";
 

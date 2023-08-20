@@ -41,3 +41,7 @@ a:active {
 .wrap-balance {
   text-wrap: balance !important;
 }
+
+.top-1 {
+  top: 2px;
+}

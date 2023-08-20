@@ -23,14 +23,9 @@ const Home: NextPage = () => {
   return (
     <Layout>
       {!isLogin ? (
-        <LoginForm callback={(data) => handleLogin(data)} />
+        <LoginForm callback={handleLogin} />
       ) : (
-        <StudentInfo
-          data={{
-            ...user,
-            callback: () => handleLogout(),
-          }}
-        />
+        <StudentInfo data={user} isAdmin={false} callback={handleLogout} />
       )}
     </Layout>
   );

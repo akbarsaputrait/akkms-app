@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { useState } from "react";
 
 import StudentList from "../student-list/student-list";
@@ -12,7 +12,7 @@ const AdminPage = ({ admin, onLogout }) => {
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <Typography>Selamat datang, {admin.name}</Typography>
+      <h3 className="text-center">Selamat datang, {admin.name}</h3>
 
       {!isShowStudentList ? (
         <div className="flex flex-col gap-4 w-full">

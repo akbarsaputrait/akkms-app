@@ -81,6 +81,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           codeOfConductId: conduct,
           score: checkCond.name.score,
           type: "NEGATIVE",
+          status: "APPROVED",
         },
       });
 
