@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { encrypt } from "../../../../services/hash";
 
 const prisma = new PrismaClient();
 
@@ -22,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               equals: username.toString(),
             },
             password: {
-              equals: encrypt(password.toString()),
+              equals: password.toString(),
             },
           },
         },

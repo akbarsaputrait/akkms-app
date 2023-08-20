@@ -1,8 +1,9 @@
+// seedAdmin();
+// seedReward();
+// seedViolation();
 // seedClassData();
 // seedConductData();
-// sedViolation();
 
-import { seedAdmin } from "./seeder/admin.seed";
+import { seedStudent } from "./seeder/student";
 
-// seedReward();
-seedAdmin();
+seedStudent();

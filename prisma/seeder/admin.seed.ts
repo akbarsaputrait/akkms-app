@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-import { encrypt } from "../../src/services/hash";
 const prisma = new PrismaClient();
 
 export async function seedAdmin() {
@@ -9,7 +8,7 @@ export async function seedAdmin() {
     data: {
       name: "Admin",
       username: "admin",
-      password: encrypt("Satudua3!"),
+      password: "Satudua3!",
     },
   });
 }

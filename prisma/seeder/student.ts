@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { studentA } from "../dummy/studentA";
+import { studentB } from "../dummy/studentB";
 
 const prisma = new PrismaClient();
 
@@ -11,15 +11,15 @@ const reverse_a_number = (n) => {
 
 export async function seedUser() {
   const className = await prisma.class.findFirstOrThrow({
-    where: { id: "8490fe67-d547-480e-9193-a96d93545f36" },
+    where: { id: "cf317e91-6585-4b31-8ad7-7d48ebda7f7e" },
   });
 
   const process = async () => {
-    for (const { nis, name, gender } of studentA) {
+    for (const { nis, name, gender } of studentB) {
       const createUser = await prisma.user.create({
         data: {
           nis,
-          name,
+          name: name.toUpperCase(),
           gender,
           pin: reverse_a_number(nis),
         },
