@@ -11,7 +11,7 @@ const AdminPage = ({ admin, onLogout }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full items-center">
       <h3 className="text-center">Selamat datang, {admin.name}</h3>
 
       {!isShowStudentList ? (
@@ -24,10 +24,6 @@ const AdminPage = ({ admin, onLogout }) => {
             onClick={() => setShowStudentList(true)}>
             Daftar Siswa/Siswi
           </Button>
-
-          <Button size="lg" fullWidth variant="gradient" color="green">
-            Konfirmasi Reward
-          </Button>
         </div>
       ) : (
         <Button variant="text" fullWidth size="md" onClick={handleBack}>
@@ -37,7 +33,7 @@ const AdminPage = ({ admin, onLogout }) => {
 
       {isShowStudentList && <StudentList />}
 
-      <Button variant="text" fullWidth size="md" color="red" onClick={onLogout}>
+      <Button size="sm" color="red" onClick={onLogout} className="mt-4">
         Keluar
       </Button>
     </div>

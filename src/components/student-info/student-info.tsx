@@ -200,9 +200,9 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
                       <Button
                         variant="gradient"
                         fullWidth
-                        size="md"
+                        size="lg"
                         onClick={() => handleShowFault(true)}
-                        color="red">
+                        color="orange">
                         Pelanggaran
                       </Button>
                     </>
@@ -213,7 +213,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
                       <Button
                         variant="gradient"
                         fullWidth
-                        size="md"
+                        size="lg"
                         color="green"
                         onClick={handleShowReward}>
                         Reward
@@ -226,11 +226,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
               {!isShowLogs ? (
                 <>
                   {" "}
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    size="md"
-                    onClick={() => handleShowLogs(true)}>
+                  <Button fullWidth size="lg" onClick={() => handleShowLogs(true)}>
                     Riwayat
                   </Button>
                 </>
@@ -280,7 +276,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
           ) : null}
 
           {!isAdmin && (
-            <Button variant="text" fullWidth size="md" onClick={handleChangePin}>
+            <Button fullWidth size="sm" color="white" variant="text" onClick={handleChangePin}>
               Ganti PIN
             </Button>
           )}
@@ -290,7 +286,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
       )}
 
       {!isAdmin && (
-        <Button variant="text" fullWidth size="md" color="red" onClick={callback}>
+        <Button size="sm" color="red" onClick={callback} className="mt-4">
           Keluar
         </Button>
       )}
