@@ -86,7 +86,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
 
   const handleOnConfirm = (e, id, status) => {
     e.preventDefault();
-    const confirmed = confirm("Anda yakin untuk mengkonfirmasi reward ini?");
+    const confirmed = confirm("Anda yakin untuk mengkonfirmasi permintaan konsekuensi ini?");
     if (confirmed) {
       fetch(`${process.env.API_URL}/admin/students/${userId}/conducts`, {
         method: "PUT",
@@ -99,7 +99,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
         .then((response) => {
           if (response.ok) {
             response.json().then(({ data }) => {
-              handleOnSubmit(data.userId, "Berhasil memperbarui reward");
+              handleOnSubmit(data.userId, "Berhasil memperbarui Konsekuensi");
               setShowLogs(false);
               const timeout = setTimeout(() => {
                 setShowLogs(true);
@@ -216,7 +216,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
                         size="lg"
                         color="green"
                         onClick={handleShowReward}>
-                        Reward
+                        Konsekuensi
                       </Button>
                     </>
                   )}
@@ -268,7 +268,7 @@ export const StudentInfo = ({ data, isAdmin = false, callback }: StudentProps) =
                 onSubmit={(user) => {
                   handleOnSubmit(
                     user,
-                    "Reward berhasil ditambahkan. Selamat dan sukses selalu 😇🥰",
+                    "Konsekuensi berhasil ditambahkan. Silahkan konfirmasi kepada Admin. Selamat dan sukses selalu 😇🥰",
                   );
                 }}
               />
