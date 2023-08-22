@@ -57,7 +57,7 @@ export const RewardForm = ({ userId, onCancel, onSubmit }: RewardProps) => {
     <Card className="w-full mt-4">
       <CardBody className={styles.formReward}>
         <div className="flex justify-between items-center mb-4">
-          <Typography variant="lead">Reward</Typography>
+          <Typography variant="lead">Konsekuensi</Typography>
           <Button size="sm" color="red" variant="outlined" onClick={onCancel}>
             Tutup
           </Button>
