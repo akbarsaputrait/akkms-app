@@ -7,4 +7,5 @@ export async function seedReward() {
   await prisma.reward.createMany({
     data: rewards,
   });
+  console.log("Reward successfully added");
 }

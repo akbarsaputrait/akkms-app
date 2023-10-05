@@ -268,7 +268,7 @@ async function seedConductName(data: any[], type: string) {
     });
 }
 
-export function seedConductData() {
+export async function seedConductData() {
   seedConduct()
     .then(async () => {
       await prisma.$disconnect();

@@ -12,6 +12,10 @@ export const rewards = [
     score: 5,
   },
   {
+    name: "Membantu menata parkir siswa",
+    score: 5,
+  },
+  {
     name: "Berprestasi tingkat sekolah",
     score: 5,
   },

@@ -1,9 +1,13 @@
-// seedAdmin();
-// seedReward();
-// seedViolation();
-// seedClassData();
-// seedConductData();
 
 import { seedStudent } from "./seeder/student";
 
-seedStudent();
+const process = async () => {
+  // await seedAdmin();
+  // await seedReward();
+  // await seedViolation();
+  // await seedClassData();
+  // await seedConductData();
+  await seedStudent();
+};
+
+process().catch((error) => console.log(error.message));
