@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { get } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
@@ -32,11 +33,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
       };
 
+      const where = {};
+
+      if (get(req, "query.nis", null)) {
+        Object.assign(where, {
+          nis: {
+            equals: req.query.nis,
+          },
+        });
+      }
+
       const data = (await prisma.user.findMany({
         select,
+        where,
         orderBy: {
           name: "asc",
         },
+        take: 30,
       })) as any;
 
       if (data) {

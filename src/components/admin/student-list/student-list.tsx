@@ -1,6 +1,7 @@
-import { Card, Typography } from "@material-tailwind/react";
+import { Card, Input, Typography } from "@material-tailwind/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { MdSearch } from "react-icons/md";
 
 import ExportExcel from "../../export-excel/export-excel";
 import { IStudent, StudentInfo } from "../../student-info/student-info";
@@ -12,6 +13,12 @@ const StudentList = () => {
 
   const [student, setStudent] = useState<IStudent>(null);
   const [studentId, setStudentId] = useState(null);
+
+  const [search, setSearch] = useState<string>("");
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
 
   const violationTextColor = (level) => {
     switch (level) {
@@ -33,7 +40,16 @@ const StudentList = () => {
   useEffect(() => {
     const fetchingLogs = async () => {
       setLoading(true);
-      const res = await fetch(`${process.env.API_URL}/admin/students`, {
+
+      let url = `${process.env.API_URL}/admin/students`;
+
+      if (search !== "") {
+        url += `?nis=${search}`;
+      } else {
+        url = `${process.env.API_URL}/admin/students`;
+      }
+
+      const res = await fetch(url, {
         method: "get",
         headers: {
           Accept: "application/json",
@@ -49,7 +65,7 @@ const StudentList = () => {
     };
 
     fetchingLogs();
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     setLoading(true);
@@ -91,6 +107,16 @@ const StudentList = () => {
         fileName={`student-list-${dayjs().unix()}`}
         disabled={loading}
       />
+
+      <div className="w-full bg-white rounded-md p-1 py-2">
+        <Input
+          label="Cari Nomor Induk Siswa..."
+          color="black"
+          onChange={handleChange}
+          icon={<MdSearch />}
+        />
+      </div>
+
       <Card className="h-full w-full overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
